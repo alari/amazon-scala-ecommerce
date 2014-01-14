@@ -12,6 +12,7 @@ libraryDependencies ++= {
   Seq(
     "ch.qos.logback" % "logback-classic" % "1.0.13",
     "joda-time" % "joda-time" % "2.3",
+    "org.joda" % "joda-convert" % "1.2",
     "commons-codec" % "commons-codec" % "1.9",
     "org.specs2" %% "specs2" % "2.2.3" % "test"
   )
