@@ -27,14 +27,6 @@ scalacOptions ++= Seq(
   "-encoding", "UTF-8"
 )
 
-publishTo := {
-  val artifactory = "http://mvn.quonb.org/artifactory/"
-  if (version.value.trim.endsWith("SNAPSHOT"))
-    Some("Artifactory Realm" at artifactory + "plugins-snapshot-local/")
-  else
-    Some("Artifactory Realm" at artifactory + "plugins-release-local/")
-}
-
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+publishTo := Some(Resolver.file("file",  new File( "/beta/mvn/repo" )) )
 
 testOptions in Test += Tests.Argument("junitxml")
