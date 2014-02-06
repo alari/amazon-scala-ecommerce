@@ -30,7 +30,7 @@ object BrowseNodeInfoRG {
   )
   val nodeIndexes = Map(
     "MoviesAndTV" -> "Video",
-    "ClothesAndAccessories" -> "Apparel",
+    "ClothingAndAccessories" -> "Apparel",
     "CellPhonesAndAccessories" -> "Wireless",
     "HomeAndKitchen" -> "Kitchen",
     "SportsAndOutdoors" -> "SportingGoods",
