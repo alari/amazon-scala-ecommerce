@@ -37,7 +37,8 @@ object BrowseNodeInfoRG {
     "HealthAndPersonalCare" -> "HealthPersonalCare",
     "ArtsCraftsAndSewing" -> "ArtsAndCrafts",
     "CollectiblesAndFineArt" -> "Collectibles",
-    "GroceryAndGourmetFood" -> "GourmetFood"
+    "GroceryAndGourmetFood" -> "GourmetFood",
+    "BabyProducts" -> "Baby"
   )
 
   def getIndex(name: String): String = {
