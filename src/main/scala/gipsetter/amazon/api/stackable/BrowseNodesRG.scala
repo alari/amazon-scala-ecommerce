@@ -9,26 +9,20 @@ trait BrowseNodesRG extends RG {
 
   abstract override def rgName = buildName(super.rgName, "BrowseNodes")
 
-  lazy val nodes = (node \ "BrowseNodes" \ "BrowseNode").map(BrowseNodesRG.readNode)
+  lazy val nodes = BrowseNodesRG.collectAncestors(node \ "BrowseNodes" headOption)
 }
 
 object BrowseNodesRG {
 
-  case class Node(id: Long, name: String)
+  case class Node(id: Long, name: String, ancestors: List[Node])
 
-  private def collectAncestors(x: Option[scala.xml.Node]): List[Node] =
-    x match {
+  private def collectAncestors(x: Option[scala.xml.Node]): List[Node] = x match {
       case Some(node) =>
-        (node \ "BrowseNode").headOption match {
-          case Some(browseNode) =>
-            readNode(browseNode) :: collectAncestors(browseNode \ "Ancestors" headOption)
-          case None =>
-            Nil
-        }
+        (node \ "BrowseNode").map(readNode).toList
       case None =>
         Nil
     }
 
   private def readNode(x: scala.xml.Node) =
-    Node((x \ "BrowseNodeId").text.toLong, (x \ "Name").text)
+    Node((x \ "BrowseNodeId").text.toLong, (x \ "Name").text, collectAncestors(x \ "Ancestors" headOption))
 }
