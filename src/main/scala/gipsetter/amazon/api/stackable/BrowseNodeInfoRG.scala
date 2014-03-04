@@ -30,14 +30,19 @@ object BrowseNodeInfoRG {
   )
   val nodeIndexes = Map(
     "MoviesAndTV" -> "Video",
-    "ClothesAndAccessories" -> "Apparel",
+    "ClothingAndAccessories" -> "Apparel",
     "CellPhonesAndAccessories" -> "Wireless",
     "HomeAndKitchen" -> "Kitchen",
     "SportsAndOutdoors" -> "SportingGoods",
     "HealthAndPersonalCare" -> "HealthPersonalCare",
     "ArtsCraftsAndSewing" -> "ArtsAndCrafts",
     "CollectiblesAndFineArt" -> "Collectibles",
-    "GroceryAndGourmetFood" -> "GourmetFood"
+    "GroceryAndGourmetFood" -> "GourmetFood",
+    "BabyProducts" -> "Baby",
+    "PatioLawnAndGarden" -> "LawnAndGarden",
+    "EverythingElse" -> "Miscellaneous",
+    "MagazineSubscriptions" -> "Books",
+    "ToolsAndHomeImprovement" -> "Tools"
   )
 
   def getIndex(name: String): String = {
