@@ -2,6 +2,7 @@ package gipsetter.amazon.api.operation
 
 import gipsetter.amazon.api.stackable.AmazonItem
 import gipsetter.amazon.api.AmazonOp
+import scala.concurrent.Future
 
 /**
  * @author alari (name.alari@gmail.com)
@@ -23,7 +24,7 @@ object ItemSearch {
     )
   }
 
-  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp) =
+  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp): Future[Seq[T]] =
     byKeywords(builder)(
       keywords, "All", itemPage,
       Map(
@@ -31,7 +32,7 @@ object ItemSearch {
         "Availability" -> "Available")
     )
 
-  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, searchIndex: String, itemPage: Int = 1, addParams: Map[String, String])(implicit op: AmazonOp) =
+  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, searchIndex: String, itemPage: Int = 1, addParams: Map[String, String])(implicit op: AmazonOp): Future[Seq[T]] =
     op(builder)("ItemSearch",
       Map("Keywords" -> keywords,
         "SearchIndex" -> searchIndex,
