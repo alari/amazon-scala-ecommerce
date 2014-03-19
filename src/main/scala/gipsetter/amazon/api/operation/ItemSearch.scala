@@ -12,12 +12,11 @@ import scala.concurrent.Future
  */
 object ItemSearch {
 
-  def byNode[T <: AmazonItem](builder: => T)(nodeId: Long, searchIndex: String, itemPage: Int = 1, sort: Option[String] = None)(implicit op: AmazonOp) = {
+  def byNode[T <: AmazonItem](builder: => T)(nodeId: Long, searchIndex: String, itemPage: Int = 1, sort: Option[String] = None, addParams: Map[String, String] = Map("Availability" -> "Available",
+    "MerchantId" -> "Amazon"))(implicit op: AmazonOp) = {
     val params = Map("BrowseNode" -> nodeId.toString,
-      "Availability" -> "Available",
-      "MerchantId" -> "Amazon",
       "SearchIndex" -> searchIndex,
-      "ItemPage" -> itemPage.toString)
+      "ItemPage" -> itemPage.toString) ++ addParams
 
     op(builder)("ItemSearch",
       sort.map(s => params + ("Sort" -> s)).getOrElse(params)
