@@ -24,15 +24,15 @@ object ItemSearch {
     )
   }
 
-  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp): Future[Seq[T]] =
-    byKeywords(builder)(
+  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp) =
+    byKeywordsParams(builder)(
       keywords, "All", itemPage,
       Map(
         "MerchantId" -> "Amazon",
         "Availability" -> "Available")
     )
 
-  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, searchIndex: String, itemPage: Int = 1, addParams: Map[String, String])(implicit op: AmazonOp): Future[Seq[T]] =
+  def byKeywordsParams[T <: AmazonItem](builder: => T)(keywords: String, searchIndex: String, itemPage: Int = 1, addParams: Map[String, String])(implicit op: AmazonOp) =
     op(builder)("ItemSearch",
       Map("Keywords" -> keywords,
         "SearchIndex" -> searchIndex,
