@@ -24,11 +24,17 @@ object ItemSearch {
   }
 
   def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp) =
+    byKeywords(builder)(
+      keywords, "All", itemPage,
+      Map(
+        "MerchantId" -> "Amazon",
+        "Availability" -> "Available")
+    )
+
+  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, searchIndex: String, itemPage: Int = 1, addParams: Map[String, String])(implicit op: AmazonOp) =
     op(builder)("ItemSearch",
       Map("Keywords" -> keywords,
-        "MerchantId" -> "Amazon",
-        "Availability" -> "Available",
-        "SearchIndex" -> "All",
-        "ItemPage" -> itemPage.toString)
+        "SearchIndex" -> searchIndex,
+        "ItemPage" -> itemPage.toString) ++ addParams
     )
 }
