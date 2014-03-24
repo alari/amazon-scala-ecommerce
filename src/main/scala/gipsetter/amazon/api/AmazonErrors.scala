@@ -10,15 +10,15 @@ case class AmazonErrors(status: Int, errors: Seq[AmazonErrors.Err]) extends Thro
 
 object AmazonErrors {
 
-  case class Err(code: String, message: String)
-
   sealed trait Error
+
+  case class Err(code: String, message: String, params: Error)
 
   case class RequestThrottled(id_ip: String) extends Error
 
   lazy val RequestThrottledR = "Request from ([^\\ ]*) is throttled\\.".r
 
-  case class Unknown(code: String, message: String) extends Error
+  case object Unknown extends Error
 
   case class ExactParameterRequirement(parameterName: String, maximumNumber: Int) extends Error
 
@@ -165,30 +165,33 @@ object AmazonErrors {
     case ("AWS.InvalidParameterValue", InvalidParameterValueR(v, p)) => InvalidParameterValue(v, p)
     case ("AWS.InvalidResponseGroup", InvalidResponseGroupR(om, lst)) => InvalidResponseGroup(om, lst)
     case ("AWS.InvalidServiceParameter", InvalidServiceParameterR(lst)) => InvalidServiceParameter(lst)
-    case ("AWS.MaximumParameterRequirement", "Your request should have at most [Maximum Number] of the following parameters: [Parameter Names].") => ???
-    case ("AWS.MinimumParameterRequirement", "Your request should have at least [Minimum Number] of the following parameters: [Parameter Names].") => ???
-    case ("AWS.MissingOperationParameter", "Your request is missing the Operation parameter. Please add the Operation parameter to your request and retry. Valid values for the Operation parameter include [ValidOperationsList].") => ???
-    case ("AWS.MissingParameterCombination", "Your request is missing a required parameter combination. Required parameter combinations include [Parameter One].") => ???
-    case ("AWS.MissingParameters", "Your request is missing required parameters. Required parameters include [RequiredParameterList].") => ???
-    case ("AWS.MissingParameterValueCombination", "Your request is missing a required parameter combination. When [Parameter One] equals [Restricted Value], [Parameter Two] must be present.") => ???
-    case ("AWS.MissingServiceParameter", "Your request is missing the Service parameter. Please add the Service parameter to your request and retry. Valid values for the Service parameter include [ValidServicesList].") => ???
-    case ("AWS.ParameterOutOfRange", "The value you specified for [ParameterName] is invalid. Valid values must be between [LowerBound] and [UpperBound].") => ???
-    case ("AWS.ParameterRepeatedInRequest", "The parameter, [ParameterName], appeared more than once in your request.") => ???
-    case ("AWS.RestrictedParameterValueCombination", "Your request contains a restricted parameter combination. When [Parameter One] equals [Restricted Value], [Parameter Two] cannot be present.") => ???
-    case ("AWS.ECommerceService.ExceededMaximumCartItems", "You may not add more than [Maximum Item Quantity] items to the cart.") => ???
-    case ("AWS.ECommerceService.InvalidQuantity", "You have exceeded the maximum quantity allowed for the following item(s): [ItemId].") => ???
-    case ("AWS.ECommerceService.ItemAlreadyInCart", "The item you specified, [ItemID], is already in your cart.") => ???
-    case ("AWS.ECommerceService.ItemNotEligibleForCart", "The item you specified, [ItemID], is not eligible to be added to the cart. Check the item's availability to make sure it is available.") => ???
+    case ("AWS.MaximumParameterRequirement", MaximumParameterRequirementR(mn, ps)) => MaximumParameterRequirement(mn.toInt, ps)
+    case ("AWS.MinimumParameterRequirement", MinimumParameterRequirementR(mn, ps)) => MinimumParameterRequirement(mn.toInt, ps)
+    case ("AWS.MissingOperationParameter", MissingOperationParameterR(lst)) => MissingOperationParameter(lst)
+    case ("AWS.MissingParameterCombination", MissingParameterCombinationR(p)) => MissingParameterCombination(p)
+    case ("AWS.MissingParameters", MissingParametersR(lst)) => MissingParameters(lst)
+    case ("AWS.MissingParameterValueCombination", MissingParameterValueCombinationR(p1, rv, p2)) => MissingParameterValueCombination(p1, rv, p2)
+    case ("AWS.MissingServiceParameter", MissingServiceParameterR(lst)) => MissingServiceParameter(lst)
+    case ("AWS.ParameterOutOfRange", ParameterOutOfRangeR(pn, lb, ub)) => ParameterOutOfRange(pn, lb, ub)
+    case ("AWS.ParameterRepeatedInRequest", ParameterRepeatedInRequestR(pn)) => ParameterRepeatedInRequest(pn)
+    case ("AWS.RestrictedParameterValueCombination", RestrictedParameterValueCombinationR(p1, rv, p2)) => RestrictedParameterValueCombination(p1, rv, p2)
+    case ("AWS.ECommerceService.ExceededMaximumCartItems", ExceededMaximumCartItemsR(miq)) => ExceededMaximumCartItems(miq.toInt)
+    case ("AWS.ECommerceService.InvalidQuantity", InvalidQuantityR(i)) => InvalidQuantity(i)
+    case ("AWS.ECommerceService.ItemAlreadyInCart", ItemAlreadyInCartR(i)) => ItemAlreadyInCart(i)
+    case ("AWS.ECommerceService.ItemNotEligibleForCart", ItemNotEligibleForCartR(i)) => ItemNotEligibleForCart(i)
     case ("AWS.ECommerceService.NoSimilarities", NoSimilaritiesR(asins)) => NoSimilarities(asins)
 
-    case (c, m) => Unknown(c, m)
+    case _ => Unknown
   }
 
 
   def read(status: Int, x: xml.Node) = {
     val errors = x \\ "Error"
     if (errors.length > 0) {
-      Some(AmazonErrors(status, errors.map(err => Err(err \ "Code" text, err \ "Message" text))))
+      Some(AmazonErrors(status, errors.map{err =>
+        val code = (err \ "Code").text
+        val message = (err \ "Message").text
+        Err(code, message, readError(code, message))}))
     } else None
   }
 }
