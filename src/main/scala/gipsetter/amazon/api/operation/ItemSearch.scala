@@ -12,8 +12,7 @@ import scala.concurrent.Future
  */
 object ItemSearch {
 
-  def byNode[T <: AmazonItem](builder: => T)(nodeId: Long, searchIndex: String, itemPage: Int = 1, sort: Option[String] = None, addParams: Map[String, String] = Map("Availability" -> "Available",
-    "MerchantId" -> "Amazon"))(implicit op: AmazonOp) = {
+  def byNode[T <: AmazonItem](builder: => T)(nodeId: Long, searchIndex: String, itemPage: Int = 1, sort: Option[String] = None, addParams: Map[String, String] = Map("Availability" -> "Available"))(implicit op: AmazonOp) = {
     val params = Map("BrowseNode" -> nodeId.toString,
       "SearchIndex" -> searchIndex,
       "ItemPage" -> itemPage.toString) ++ addParams
@@ -26,9 +25,7 @@ object ItemSearch {
   def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp) =
     byKeywordsParams(builder)(
       keywords, "All", itemPage,
-      Map(
-        "MerchantId" -> "Amazon",
-        "Availability" -> "Available")
+      Map("Availability" -> "Available")
     )
 
   def byKeywordsParams[T <: AmazonItem](builder: => T)(keywords: String, searchIndex: String, itemPage: Int = 1, addParams: Map[String, String])(implicit op: AmazonOp) =
