@@ -4,7 +4,7 @@ name := """amazon-api"""
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
 sbtVersion := "0.13.1"
 
@@ -27,6 +27,6 @@ scalacOptions ++= Seq(
   "-encoding", "UTF-8"
 )
 
-publishTo := Some(Resolver.file("file",  new File( "/beta/mvn/repo" )) )
+publishTo := Some(Resolver.file("file",  new File( "/mvn-repo" )) )
 
 testOptions in Test += Tests.Argument("junitxml")
