@@ -12,7 +12,7 @@ import scala.concurrent.Future
  */
 object ItemSearch {
 
-  def byNode(nodeId: Long, searchIndex: String, itemPage: Int = 1, sort: Option[String] = None, addParams: Map[String, String] = Map("Availability" -> "Available")) = {
+  def byNodeId(nodeId: Long, searchIndex: String, itemPage: Int = 1, sort: Option[String] = None, addParams: Map[String, String] = Map("Availability" -> "Available")) = {
     val params = Map("BrowseNode" -> nodeId.toString,
       "SearchIndex" -> searchIndex,
       "ItemPage" -> itemPage.toString) ++ addParams
@@ -37,7 +37,7 @@ object ItemSearch {
 
 
   @deprecated("Use more granular api", "25.06.2014")
-  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int = 1)(implicit op: AmazonOp) =
+  def byKeywords[T <: AmazonItem](builder: => T)(keywords: String, itemPage: Int)(implicit op: AmazonOp) =
     byKeywordsParams(builder)(
       keywords, "All", itemPage,
       Map("Availability" -> "Available")

@@ -24,7 +24,6 @@ libraryDependencies ++= {
     case Some((2, scalaMajor)) if scalaMajor >= 11 =>
       Seq("org.scala-lang.modules" %% "scala-xml" % "1.0.2")
     case _ =>
-      // or just libraryDependencies.value if you don't depend on scala-swing
       Seq()
   }
 }
