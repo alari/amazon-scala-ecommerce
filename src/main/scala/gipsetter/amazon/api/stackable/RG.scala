@@ -28,7 +28,7 @@ abstract class RG {
 }
 
 object RG {
-  def text(of: String, n: xml.Node) = n \ of text
+  def text(of: String, n: xml.Node) = if(n == null) "" else n \ of text
 
   def textOpt(of: String, n: xml.Node) = text(of, n) match {
     case "" => None

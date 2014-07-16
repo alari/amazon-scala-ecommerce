@@ -11,7 +11,7 @@ trait OffersRG extends RG with OfferSummaryRG {
 
   abstract override def rgName = buildName(super.rgName, "Offers")
 
-  private lazy val ofn = node \ "Offers" head
+  private lazy val ofn = (node \ "Offers" headOption).orNull
 
   lazy val offersTotal = int("TotalOffers", ofn)
   lazy val offersTotalPages = int("TotalOfferPages", ofn)
