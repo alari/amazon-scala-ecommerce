@@ -18,6 +18,7 @@ class CartRG extends RG {
   lazy val cartItems = node \ "CartItems" \ "CartItem" map {
     i =>
       CartRG.CartItem(
+        text("CartItemId", i),
         text("ASIN", i),
         int("Quantity", i),
         text("Title", i),
@@ -39,6 +40,7 @@ class CartRG extends RG {
 object CartRG {
 
   case class CartItem(
+                       cartItemId: String,
                        asin: String,
                        quantity: Int,
                        title: String,

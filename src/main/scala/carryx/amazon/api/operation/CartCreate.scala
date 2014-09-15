@@ -17,4 +17,12 @@ object CartCreate {
         m + (s"Item.$i.ASIN" -> asin) + (s"Item.$i.Quantity" -> q.toString)
     }
   )
+
+  def byOfferListingIds(listings: (String, Int)*) = AmazonRequest(
+    "CartCreate",
+    listings.view.zipWithIndex.foldLeft(Map.empty[String, String]) {
+      case (m, ((listingId, q), i)) =>
+        m + (s"Item.$i.OfferListingId" -> listingId) + (s"Item.$i.Quantity" -> q.toString)
+    }
+  )
 }
