@@ -1,4 +1,7 @@
 amazon-scala-ecommerce
 ======================
 
-Amazon Ecommerce API wrapper for Scala. Async, stackable, cool.
+A Scala wrapper for the Amazon Product Advertising (Affiliate) API.
+----------------------
+
+Async, stackable, cool.
