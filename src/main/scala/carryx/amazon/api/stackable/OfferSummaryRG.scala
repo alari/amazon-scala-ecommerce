@@ -1,4 +1,4 @@
-package gipsetter.amazon.api.stackable
+package carryx.amazon.api.stackable
 
 
 /**

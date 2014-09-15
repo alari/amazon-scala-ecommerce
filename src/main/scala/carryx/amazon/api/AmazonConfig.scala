@@ -1,4 +1,4 @@
-package gipsetter.amazon.api
+package carryx.amazon.api
 
 /**
  * @author alari

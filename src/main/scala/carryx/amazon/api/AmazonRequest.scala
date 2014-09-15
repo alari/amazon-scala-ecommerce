@@ -1,6 +1,6 @@
-package gipsetter.amazon.api
+package carryx.amazon.api
 
-import gipsetter.amazon.api.stackable.RG
+import carryx.amazon.api.stackable.RG
 
 /**
  * @author alari
