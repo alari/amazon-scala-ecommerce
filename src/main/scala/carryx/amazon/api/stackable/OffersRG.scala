@@ -4,7 +4,7 @@ package carryx.amazon.api.stackable
  * @author alari (name.alari@gmail.com)
  * @since 01.11.13 13:45
  *
- * @see
+ * @see http://docs.aws.amazon.com/AWSECommerceService/latest/DG/RG_Offers.html
  */
 trait OffersRG extends RG with OfferSummaryRG {
   self: AmazonItem =>
@@ -25,7 +25,7 @@ trait OffersRG extends RG with OfferSummaryRG {
           attributes <- (o \ "OfferAttributes").headOption
           availabilityAttrs <- (listing \ "AvailabilityAttributes").headOption
         } yield OffersRG.Offer(
-          text("Condition", attributes),
+          OffersRG.Condition.values.find(_.toString == text("Condition", attributes)).getOrElse(OffersRG.Condition.Unknown),
           text("OfferListingId", listing),
           Price.build(listing \ "Price" head),
           text("Availability", listing),
@@ -44,7 +44,7 @@ trait OffersRG extends RG with OfferSummaryRG {
 object OffersRG {
 
   case class Offer(
-                    condition: String,
+                    condition: Condition.Value,
                     listingId: String,
                     price: Price,
                     availability: String,
@@ -54,5 +54,8 @@ object OffersRG {
                     isEligibleForSuperSaverShipping: Boolean
                     )
 
+  object Condition extends Enumeration {
+    val Used, New, Refurbished, Collectible, Unknown = Value
+  }
 
 }
