@@ -10,7 +10,7 @@ import carryx.amazon.api.AmazonRequest
  */
 object CartGet {
   def get(id: String, hmac: String) = AmazonRequest(
-    "CartGet",
+     "CartGet",
     Map(
       "CartId" -> id,
       "HMAC" -> hmac
