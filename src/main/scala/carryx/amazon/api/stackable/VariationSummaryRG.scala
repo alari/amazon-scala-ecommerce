@@ -9,6 +9,6 @@ trait VariationSummaryRG extends RG {
 
   abstract override def rgName = buildName(super.rgName, "VariationSummary")
 
-  lazy val variationsLowestPrice = (node \ "VariationSummary" headOption) map (_ \ "LowestPrice" head) map Price.build
-  lazy val variationsHighestPrice = (node \ "VariationSummary" headOption) map (_ \ "HighestPrice" head) map Price.build
+  lazy val variationsLowestPrice = (node \ "VariationSummary" headOption) map (_ \ "LowestPrice" head) map {p => Price.build(p)}
+  lazy val variationsHighestPrice = (node \ "VariationSummary" headOption) map (_ \ "HighestPrice" head) map {p => Price.build(p)}
 }

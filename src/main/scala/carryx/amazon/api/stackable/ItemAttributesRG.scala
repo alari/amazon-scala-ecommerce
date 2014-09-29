@@ -14,7 +14,7 @@ trait ItemAttributesRG extends RG {
 
   lazy val dimensions = (itemAttrs \ "ItemDimensions" headOption) map ItemAttributesRG.readDimensions
 
-  lazy val price = (itemAttrs \ "ListPrice" headOption).map(Price.build)
+  lazy val price = (itemAttrs \ "ListPrice" headOption).map(p => Price.build(p))
 
   lazy val packageDimensions = (itemAttrs \ "PackageDimensions" headOption) map ItemAttributesRG.readDimensions
 
