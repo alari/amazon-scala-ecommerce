@@ -21,7 +21,7 @@ object Price{
       val currency = if (c.length > 0) Some(c) else None
       Price(amount, currency, f)
     } catch {
-      case _: NullPointerException =>
+      case _: NullPointerException | _: NoSuchElementException =>
         Price(Some(0), None, "")
     }
   }
