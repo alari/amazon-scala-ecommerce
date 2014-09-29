@@ -11,13 +11,18 @@ object Price{
   val CurrencyCode = "CurrencyCode"
   val FormattedPrice = "FormattedPrice"
 
-  def build(price: xml.Node): Price = {
-    val a = price \ Amount text
-    val c = price \ CurrencyCode text
-    val f = price \ FormattedPrice text
+  def build(price: => xml.Node): Price = {
+    try {
+      val a = price \ Amount text
+      val c = price \ CurrencyCode text
+      val f = price \ FormattedPrice text
 
-    val amount = if (a.length > 0) Some(a.toInt) else None
-    val currency = if (c.length > 0) Some(c) else None
-    Price(amount, currency, f)
+      val amount = if (a.length > 0) Some(a.toInt) else None
+      val currency = if (c.length > 0) Some(c) else None
+      Price(amount, currency, f)
+    } catch {
+      case _: NullPointerException =>
+        Price(Some(0), None, "")
+    }
   }
 }
