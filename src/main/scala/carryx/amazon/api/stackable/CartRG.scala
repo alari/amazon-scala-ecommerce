@@ -1,5 +1,7 @@
 package carryx.amazon.api.stackable
 
+import scala.xml.Node
+
 /**
  * @author alari (name.alari@gmail.com)
  * @since 31.10.13 19:21
@@ -15,18 +17,20 @@ class CartRG extends RG {
     Seq[this.type](cart)
   }
 
-  lazy val cartItems = node \ "CartItems" \ "CartItem" map {
-    i =>
-      CartRG.CartItem(
-        text("CartItemId", i),
-        text("ASIN", i),
-        int("Quantity", i),
-        text("Title", i),
-        text("ProductGroup", i),
-        Price.build(i \ "Price" head),
-        Price.build(i \ "ItemTotal" head)
-      )
-  }
+  private def readCartItem(i: Node): CartRG.CartItem =
+    CartRG.CartItem(
+      text("CartItemId", i),
+      text("ASIN", i),
+      int("Quantity", i),
+      text("Title", i),
+      text("ProductGroup", i),
+      Price.build(i \ "Price" head),
+      Price.build(i \ "ItemTotal" head)
+    )
+
+  lazy val cartItems = node \ "CartItems" \ "CartItem" map readCartItem
+
+  lazy val savedForLaterItems = node \ "SavedForLaterItems" \ "SavedForLaterItem" map readCartItem
 
   lazy val hmac = text("HMAC")
   lazy val urlEncodedHmac = text("URLEncodedHMAC")
@@ -48,5 +52,4 @@ object CartRG {
                        price: Price,
                        itemTotal: Price
                        )
-
 }

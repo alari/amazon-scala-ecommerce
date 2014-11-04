@@ -4,7 +4,7 @@ name := """amazon-api"""
 
 version := "1.1-SNAPSHOT"
 
-crossScalaVersions := Seq("2.10.4", "2.11.2")
+crossScalaVersions := Seq("2.10.4", "2.11.4")
 
 sbtVersion := "0.13.5"
 
