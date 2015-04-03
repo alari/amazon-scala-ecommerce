@@ -2,11 +2,13 @@ organization := "com.carryx"
 
 name := """amazon-api"""
 
-version := "1.1-SNAPSHOT"
+version := "1.2-SNAPSHOT"
 
-crossScalaVersions := Seq("2.10.4", "2.11.4")
+scalaVersion := "2.11.6"
 
-sbtVersion := "0.13.5"
+crossScalaVersions := Seq("2.10.4", "2.11.6")
+
+sbtVersion := "0.13.7"
 
 libraryDependencies ++= {
   Seq(

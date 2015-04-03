@@ -4,6 +4,7 @@ import java.net.URLEncoder
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.Mac
 import org.joda.time.DateTime
+import org.joda.time.format.ISODateTimeFormat
 import scala.collection.immutable.TreeMap
 import org.apache.commons.codec.binary.Base64
 
@@ -20,6 +21,10 @@ case class AmazonSigner(
                        requestUri: String = "/onca/xml",
                        endPoint: String = "webservices.amazon.com"
                        ) {
+
+  val fmt = ISODateTimeFormat.dateTime()
+
+  def timestamp = fmt.print(new DateTime())
 
   /**
    * Takes an ordered map of parameters, signs it and returns the map
@@ -41,7 +46,7 @@ case class AmazonSigner(
   def sortParams(params: Map[String, String]) = TreeMap(
     "AWSAccessKeyId" -> awsAccessKey,
     "Version" -> apiVersion,
-    "Timestamp" -> DateTime.now().toString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'")
+    "Timestamp" -> timestamp
   ) ++ params
 }
 
