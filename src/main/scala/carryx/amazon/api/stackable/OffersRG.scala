@@ -27,6 +27,7 @@ trait OffersRG extends RG with OfferSummaryRG {
         } yield OffersRG.Offer(
           OffersRG.Condition.values.find(_.toString == text("Condition", attributes)).getOrElse(OffersRG.Condition.Unknown),
           text("OfferListingId", listing),
+          (o \ "Merchant").headOption.flatMap(textOpt("Name", _)),
           Price.build(listing \ "Price" head),
           text("Availability", listing),
           text("AvailabilityType", availabilityAttrs),
@@ -46,6 +47,7 @@ object OffersRG {
   case class Offer(
                     condition: Condition.Value,
                     listingId: String,
+                    merchant: Option[String],
                     price: Price,
                     availability: String,
                     availabilityType: String,
