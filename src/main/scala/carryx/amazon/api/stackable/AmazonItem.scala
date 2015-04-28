@@ -15,4 +15,5 @@ class AmazonItem extends RG{
     }.asInstanceOf[Seq[this.type]]
 
   lazy val asin = (node \ "ASIN").text
+  lazy val parentAsin = textOpt("ParentASIN", node)
 }
