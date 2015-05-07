@@ -31,7 +31,7 @@ trait OffersRG extends RG with OfferSummaryRG {
           Price.build(listing \ "Price" head),
           (listing \ "SalePrice" headOption).map(n => Price.build(n)),
           (listing \ "AmountSaved" headOption).map(n => Price.build(n)),
-          intOpt("AmountSaved", listing),
+          intOpt("PercentageSaved", listing),
           text("Availability", listing),
           text("AvailabilityType", availabilityAttrs),
           int("MaximumHours", availabilityAttrs),
